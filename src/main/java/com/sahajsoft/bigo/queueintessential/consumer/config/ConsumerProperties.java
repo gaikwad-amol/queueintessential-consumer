@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
+import java.io.File;
 import java.util.Objects;
 
 @Configuration
@@ -21,4 +22,9 @@ public class ConsumerProperties {
   public Integer getBrokerSocketPort() {
     return Integer.valueOf(Objects.requireNonNull(environment.getProperty("consumer.socket.port")));
   }
+
+  public File getFileDestinationFolder() {
+    return new File(Objects.requireNonNull(environment.getProperty("consumer.write.folder")));
+  }
+
 }
