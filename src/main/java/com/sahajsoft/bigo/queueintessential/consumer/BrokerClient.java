@@ -28,7 +28,6 @@ public class BrokerClient {
     clientSocket = new Socket(ip, port);
     out = new PrintWriter(clientSocket.getOutputStream(), true);
     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-    receiveMessage();
   }
 
   public void receiveMessage() throws IOException {

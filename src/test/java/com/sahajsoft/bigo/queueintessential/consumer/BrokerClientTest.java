@@ -36,7 +36,6 @@ public class BrokerClientTest {
     serverThread.start();
   }
 
-  @Ignore
   @Test
   public void shouldReceiveMessage() {
     final boolean[] isMethodCalled = {false};

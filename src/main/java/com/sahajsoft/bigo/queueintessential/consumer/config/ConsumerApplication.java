@@ -26,7 +26,9 @@ public class ConsumerApplication {
     ConfigurableApplicationContext applicationContext = SpringApplication.run(ConsumerApplication.class, args);
     ConsumerProperties properties = applicationContext.getBean(ConsumerProperties.class);
     try {
-      applicationContext.getBean(BrokerClient.class).startConnection(properties.getBrokerIPAddress(), properties.getBrokerPort());
+      BrokerClient brokerClient = applicationContext.getBean(BrokerClient.class);
+      brokerClient.startConnection(properties.getBrokerIPAddress(), properties.getBrokerPort());
+      brokerClient.receiveMessage();
     } catch (IOException e) {
       log.error("Error occurred while starting the broker,", e);
     }
