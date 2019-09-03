@@ -1,6 +1,5 @@
 package com.sahajsoft.bigo.queueintessential.consumer;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,46 +8,47 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Path;
 
 @Component
-@Slf4j
-public class Server {
+public class BrokerClient {
 
-  private ServerSocket serverSocket;
   private Socket clientSocket;
   private PrintWriter out;
   private BufferedReader in;
 
-  @Autowired
   private Consumer consumer;
 
-  public void start(int port) throws IOException {
-    serverSocket = new ServerSocket(port);
-    clientSocket = serverSocket.accept();
+  @Autowired
+  public BrokerClient(Consumer consumer) {
+    this.consumer = consumer;
+  }
 
+  public void startConnection(String ip, int port) throws IOException {
+    clientSocket = new Socket(ip, port);
     out = new PrintWriter(clientSocket.getOutputStream(), true);
     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    receiveMessage();
+  }
 
+  public void receiveMessage() throws IOException {
     String message;
     while ((message = in.readLine()) != null) {
-      log.info("Consumer received message  - " + message);
-      Path fileName = consumer.receive(message);
-      out.println("Consumer 200 OK - " + fileName.toString());
+      String response = "OK";
+      out.println(response);
+      consumer.receive(message);
     }
   }
 
-  public void stop() throws IOException {
+  private void stopConnection() throws IOException {
     in.close();
     out.close();
     clientSocket.close();
-    serverSocket.close();
   }
 
   @PreDestroy
   public void cleanUp() throws Exception {
-    stop();
+    stopConnection();
   }
 }
+

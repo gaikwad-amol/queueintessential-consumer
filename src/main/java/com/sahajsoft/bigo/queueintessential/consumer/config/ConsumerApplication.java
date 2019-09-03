@@ -1,6 +1,6 @@
 package com.sahajsoft.bigo.queueintessential.consumer.config;
 
-import com.sahajsoft.bigo.queueintessential.consumer.Server;
+import com.sahajsoft.bigo.queueintessential.consumer.BrokerClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,9 +24,9 @@ public class ConsumerApplication {
 
   public static void main(String[] args) {
     ConfigurableApplicationContext applicationContext = SpringApplication.run(ConsumerApplication.class, args);
-    Integer brokerSocketPort = applicationContext.getBean(ConsumerProperties.class).getBrokerSocketPort();
+    ConsumerProperties properties = applicationContext.getBean(ConsumerProperties.class);
     try {
-      applicationContext.getBean(Server.class).start(brokerSocketPort);
+      applicationContext.getBean(BrokerClient.class).startConnection(properties.getBrokerIPAddress(), properties.getBrokerPort());
     } catch (IOException e) {
       log.error("Error occurred while starting the broker,", e);
     }

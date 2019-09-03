@@ -19,12 +19,16 @@ public class ConsumerProperties {
     this.environment = environment;
   }
 
-  public Integer getBrokerSocketPort() {
-    return Integer.valueOf(Objects.requireNonNull(environment.getProperty("consumer.socket.port")));
-  }
-
   public File getFileDestinationFolder() {
     return new File(Objects.requireNonNull(environment.getProperty("consumer.write.folder")));
+  }
+
+  public String getBrokerIPAddress() {
+    return environment.getProperty("borker.ipaddress");
+  }
+
+  public Integer getBrokerPort() {
+    return Integer.valueOf(Objects.requireNonNull(environment.getProperty("broker.socket.port")));
   }
 
 }

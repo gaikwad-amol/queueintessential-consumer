@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ConsumerTest {
+class FileMessageConsumerTest {
 
   private ConsumerProperties properties;
   private File testFolderToWriteFiles;
@@ -33,8 +33,8 @@ class ConsumerTest {
   public void shouldCreateFileWithReceivedMessageAsContent() {
     testFolderToWriteFiles = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("TestFolderToWriteFiles")).getFile());
     when(properties.getFileDestinationFolder()).thenReturn(testFolderToWriteFiles);
-    Consumer consumer = new Consumer(properties);
-    Path filePath = consumer.receive("{'message_id':'testFile'}");
+    FileMessageConsumer fileMessageConsumer = new FileMessageConsumer(properties);
+    Path filePath = fileMessageConsumer.receive("{'message_id':'testFile'}");
     System.out.println(filePath.getFileName());
     assertEquals("testFile.json", filePath.getFileName().toString());
   }
