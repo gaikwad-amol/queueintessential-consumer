@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 public class FileMessageConsumer implements Consumer {
 
   private ConsumerProperties properties;
+  int count = 0;
 
   @Autowired
   public FileMessageConsumer(ConsumerProperties properties) {
@@ -31,12 +32,15 @@ public class FileMessageConsumer implements Consumer {
     }
     Path filePath = null;
     try {
+      log.info("message received - " + message);
+      count++;
+      log.info("message count " + count);
       JSONObject jsonMessage = new JSONObject(message);
       String uuid = jsonMessage.getString("message_id");
       filePath = Files.write(Paths.get(folder.getAbsolutePath() + "/" + uuid + ".json"), message.getBytes());
       log.info("success-" + filePath.toString());
     } catch (Exception e) {
-      log.error("Failed to create file for message - " + message);
+      log.error("Failed to create file for message - " + message, e);
     }
     return filePath;
   }

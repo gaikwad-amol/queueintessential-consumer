@@ -1,6 +1,7 @@
 package com.sahajsoft.bigo.queueintessential.consumer.config;
 
 import com.sahajsoft.bigo.queueintessential.consumer.BrokerClient;
+import com.sahajsoft.bigo.queueintessential.consumer.BrokerNIOClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -26,7 +27,7 @@ public class ConsumerApplication {
     ConfigurableApplicationContext applicationContext = SpringApplication.run(ConsumerApplication.class, args);
     ConsumerProperties properties = applicationContext.getBean(ConsumerProperties.class);
     try {
-      BrokerClient brokerClient = applicationContext.getBean(BrokerClient.class);
+      BrokerNIOClient brokerClient = applicationContext.getBean(BrokerNIOClient.class);
       brokerClient.startConnection(properties.getBrokerIPAddress(), properties.getBrokerPort());
       brokerClient.receiveMessage();
     } catch (IOException e) {
