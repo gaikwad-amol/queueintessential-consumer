@@ -25,16 +25,20 @@ public class BrokerClient {
   }
 
   public void startConnection(String ip, int port) throws IOException {
+    System.out.println("Connecting " + ip + ":" + port);
     clientSocket = new Socket(ip, port);
     out = new PrintWriter(clientSocket.getOutputStream(), true);
     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    System.out.println("Connected " + ip + ":" + port);
   }
 
   public void receiveMessage() throws IOException {
+    System.out.println("receiving .. ");
     String message;
     while ((message = in.readLine()) != null) {
+      System.out.println("read");
       String response = "OK";
-      out.println(response);
+      //out.println(response);
       consumer.receive(message);
     }
   }

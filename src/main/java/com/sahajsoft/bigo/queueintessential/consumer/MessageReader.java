@@ -26,6 +26,8 @@ public class MessageReader {
       }
       builder = new StringBuilder(split[split.length - 1]);
     }
+    //messages.forEach(m-> System.out.println("created message - " + m));
+    //System.out.println("partial message - " + builder.toString());
     return messages;
   }
 

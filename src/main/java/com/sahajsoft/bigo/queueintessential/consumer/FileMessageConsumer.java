@@ -32,13 +32,18 @@ public class FileMessageConsumer implements Consumer {
     }
     Path filePath = null;
     try {
-      log.info("message received - " + message);
-      count++;
-      log.info("message count " + count);
+      if (message.equals("LAST")) {
+        log.info("Done");
+        return filePath;
+      }
+      //log.info("message received - " + message);
+      //count++;
+      //log.info("message count " + count);
       JSONObject jsonMessage = new JSONObject(message);
       String uuid = jsonMessage.getString("message_id");
       filePath = Files.write(Paths.get(folder.getAbsolutePath() + "/" + uuid + ".json"), message.getBytes());
-      log.info("success-" + filePath.toString());
+      //log.info("success-" + filePath.toString());
+
     } catch (Exception e) {
       log.error("Failed to create file for message - " + message, e);
     }

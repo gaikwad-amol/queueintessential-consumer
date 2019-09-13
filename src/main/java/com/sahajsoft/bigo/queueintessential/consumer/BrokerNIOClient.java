@@ -22,7 +22,7 @@ public class BrokerNIOClient {
   private Consumer consumer;
   MessageReader messageReader = new MessageReader();
  //ByteBuffer buffer = ByteBuffer.allocate(1024);
-  private int count = 0;
+  //private int count = 0;
 
   @Autowired
   public BrokerNIOClient(Consumer consumer) {
@@ -54,9 +54,10 @@ public class BrokerNIOClient {
 
       //log.info("receivedText - " + receivedText);
       String receivedText = new String(buffer.array()).trim();
+      System.out.println("received text - " + receivedText);
       List<String> messages = messageReader.extractMessage(receivedText);
       messages.forEach(message -> {
-        count++;
+        //count++;
 //        System.out.println("consumer received " + count);
         consumer.receive(message);
       });
