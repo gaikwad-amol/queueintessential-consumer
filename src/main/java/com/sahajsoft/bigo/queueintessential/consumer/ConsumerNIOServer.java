@@ -30,7 +30,7 @@ public class ConsumerNIOServer {
   public void start(int port) throws IOException {
     Selector selector = Selector.open();
     serverSocketChannel = ServerSocketChannel.open();
-    InetSocketAddress inetSocketAddress = new InetSocketAddress("localhost", port);
+    InetSocketAddress inetSocketAddress = new InetSocketAddress("Amols-MacBook-Pro-3.local", port);
 
     serverSocketChannel.bind(inetSocketAddress);
     serverSocketChannel.configureBlocking(false);
