@@ -23,12 +23,11 @@ public class ConsumerProperties {
     return new File(Objects.requireNonNull(environment.getProperty("consumer.write.folder")));
   }
 
-  public String getBrokerIPAddress() {
-    return environment.getProperty("borker.ipaddress");
-  }
-
   public Integer getBrokerPort() {
-    return Integer.valueOf(Objects.requireNonNull(environment.getProperty("broker.socket.port")));
+    return Integer.valueOf(Objects.requireNonNull(environment.getProperty("consumer.socket.port")));
   }
 
+  public String getHostName() {
+    return environment.getProperty("consumer.ipaddress");
+  }
 }

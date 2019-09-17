@@ -27,10 +27,10 @@ public class ConsumerNIOServer {
   MessageReader messageReader = new MessageReader();
   //int count = 0;
 
-  public void start(int port) throws IOException {
+  public void start(String hostname, int port) throws IOException {
     Selector selector = Selector.open();
     serverSocketChannel = ServerSocketChannel.open();
-    InetSocketAddress inetSocketAddress = new InetSocketAddress("Amols-MacBook-Pro-3.local", port);
+    InetSocketAddress inetSocketAddress = new InetSocketAddress(hostname, port);
 
     serverSocketChannel.bind(inetSocketAddress);
     serverSocketChannel.configureBlocking(false);

@@ -31,7 +31,7 @@ public class ConsumerApplication {
       new Thread(() -> {
         try {
           ConsumerNIOServer consumerNIOServer = applicationContext.getBean(ConsumerNIOServer.class);
-          consumerNIOServer.start(properties.getBrokerPort());
+          consumerNIOServer.start(properties.getHostName(), properties.getBrokerPort());
         } catch (IOException e) {
           log.error("Exception occurred while starting consumer socket server", e);
         }
