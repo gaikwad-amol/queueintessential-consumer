@@ -30,4 +30,12 @@ public class ConsumerProperties {
   public String getHostName() {
     return environment.getProperty("consumer.ipaddress");
   }
+
+  public Integer threads() {
+    return Integer.valueOf(Objects.requireNonNull(environment.getProperty("threads")));
+  }
+
+  public Integer getQueueCapacity() {
+    return Integer.valueOf(Objects.requireNonNull(environment.getProperty("queueCapacity")));
+  }
 }
