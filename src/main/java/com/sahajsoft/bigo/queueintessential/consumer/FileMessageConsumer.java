@@ -41,14 +41,6 @@ public class FileMessageConsumer implements Consumer {
     Path filePath = null;
     try {
       queue.put(message);
-      //log.info("message received - " + message);
-      //count++;
-      //log.info("message count " + count);
-//      JSONObject jsonMessage = new JSONObject(message);
-//      String uuid = jsonMessage.getString("message_id");
-//      filePath = Files.write(Paths.get(folder.getAbsolutePath() + "/" + uuid + ".json"), message.getBytes());
-      //log.info("success-" + filePath.toString());
-
     } catch (Exception e) {
       log.error("Failed before to create file for message - " + message, e);
     }
@@ -56,26 +48,9 @@ public class FileMessageConsumer implements Consumer {
   }
 
   private void writeFile() {
-//    while (true) {
-//      String message = queue.poll();
-//      if (!StringUtils.isEmpty(message)) {
-//        if (message.equals("LAST")) {
-//          log.info("Done");
-//        } else {
-//          JSONObject jsonMessage = new JSONObject(message);
-//          String uuid = jsonMessage.getString("message_id");
-//          try {
-//            Files.write(Paths.get(folder.getAbsolutePath() + "/" + uuid + ".json"), message.getBytes());
-//          } catch (IOException e) {
-//            log.error("Failed to create file for message - " + message, e);
-//          }
-//        }
-//
-//      }
-//    }
     int threads = properties.threads();
     ExecutorService executorService = Executors.newFixedThreadPool(threads);
-    for(int i =0; i<threads; i++) {
+    for (int i = 0; i < threads; i++) {
       executorService.submit(new MessageWriter());
     }
   }

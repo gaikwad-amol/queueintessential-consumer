@@ -1,0 +1,27 @@
+package com.sahajsoft.bigo.queueintessential.consumer;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class MessageReaderTest {
+
+  MessageReader messageReader = new MessageReader();
+
+  @Test
+  public void test() {
+    String message = "{\"edited\":false,\"id\":\"cuwnc\",\"parent_id\":\"t3_uwna\",\"author_flair_text\":null,\"author\":\"Mike_M\",\"distinguished\":null,\"retrieved_on\":1473808616,\"gilded\":0,\"subreddit_id\":\"t5_6\",\"link_id\":\"t3_uwna\",\"stickied\":false,\"body\":\"how many other 40 year-old women feel this way?\",\"controversiality\":0,\"score\":1,\"ups\":1,\"author_flair_css_class\":null,\"created_utc\":1166193153,\"subreddit\":\"reddit.com\",\"timestamp_epoch\":1566236769,\"message_id\":\"30444-1cc99b56-149c-4d82-802e-6831d6a19786-1566236769\"}<END>{\"gilded\":0,\"retrieved_on\":1473808501,\"distinguished\":null,\"author_flair_text\":null,\"author\":\"MachinShin2006\",\"id\":\"cuqfp\",\"parent_id\":\"t3_upxe\",\"edited\":false,\"subreddit\":\"programming\",\"created_utc\":1166074778,\"author_flair_css_class\":null,\"ups\":6,\"score\":6,\"body\":\"if this is so, linux will be shooting itself right through it's metaphorical head.\\r\\n\\r\\n--vat\",\"controversiality\":0,\"stickied\":false,\"link_id\":\"t3_upxe\",\"subreddit_id\":\"t5_2fwo\",\"timestamp_epoch\":1566236768,\"message_id\":\"27528-3eb8a981-fb91-4805-9f4f-0d8e9abc6684-1566236768\"}<END>{\"parent_id\":\"t3_uf4k\",\"edited\":false,\"id\":\"cuglv\",\"author\":\"degustixmassled\",\"author_flair_text\":null,\"retrieved_on\":1473808316,\"distinguished\":null,\"gilded\":0,\"stickied\":false,\"link_id\":\"t3_uf4k\",\"subreddit_id\":\"t5_2fwo\",\"body\":\"I for one welcome our new computer based captains of industry.\",\"controversiality\":0,\"created_utc\":1165859969,\"author_flair_css_class\":null,\"score\":2,\"ups\":2,\"subreddit\":\"programming\",\"timestamp_epoch\":1566236766,\"message_id\":\"22735-7bff524e-339c-457b-8f5d-c1c09941d3b4-1566236766\"}<END>{\"retrieved_on\":1473809083,\"distinguished\":null,\"gilded\":0,\"edited\":false,\"parent_id\":\"t1_cvkrh\",\"id\":\"cvl4k\",\"author\":\"[deleted]\",\"author_flair_text\":null,\"created_utc\":1166676062,\"author_flair_css_class\":null,\"ups\":22,\"score\":22,\"subreddit\":\"reddit.com\",\"stickied\":false,\"link_id\":\"t3_vk0o\",\"subreddit_id\":\"t5_6\",\"controversiality\":0,\"body\":\"i'm still young, but i'm starting to think that putnam-like smarts can never really pay off in a big way if you don't have the other piece. part of me (the one";
+    List<String> expectedMessage = Arrays.asList(
+        "{\"edited\":false,\"id\":\"cuwnc\",\"parent_id\":\"t3_uwna\",\"author_flair_text\":null,\"author\":\"Mike_M\",\"distinguished\":null,\"retrieved_on\":1473808616,\"gilded\":0,\"subreddit_id\":\"t5_6\",\"link_id\":\"t3_uwna\",\"stickied\":false,\"body\":\"how many other 40 year-old women feel this way?\",\"controversiality\":0,\"score\":1,\"ups\":1,\"author_flair_css_class\":null,\"created_utc\":1166193153,\"subreddit\":\"reddit.com\",\"timestamp_epoch\":1566236769,\"message_id\":\"30444-1cc99b56-149c-4d82-802e-6831d6a19786-1566236769\"}",
+        "{\"gilded\":0,\"retrieved_on\":1473808501,\"distinguished\":null,\"author_flair_text\":null,\"author\":\"MachinShin2006\",\"id\":\"cuqfp\",\"parent_id\":\"t3_upxe\",\"edited\":false,\"subreddit\":\"programming\",\"created_utc\":1166074778,\"author_flair_css_class\":null,\"ups\":6,\"score\":6,\"body\":\"if this is so, linux will be shooting itself right through it's metaphorical head.\\r\\n\\r\\n--vat\",\"controversiality\":0,\"stickied\":false,\"link_id\":\"t3_upxe\",\"subreddit_id\":\"t5_2fwo\",\"timestamp_epoch\":1566236768,\"message_id\":\"27528-3eb8a981-fb91-4805-9f4f-0d8e9abc6684-1566236768\"}",
+        "{\"parent_id\":\"t3_uf4k\",\"edited\":false,\"id\":\"cuglv\",\"author\":\"degustixmassled\",\"author_flair_text\":null,\"retrieved_on\":1473808316,\"distinguished\":null,\"gilded\":0,\"stickied\":false,\"link_id\":\"t3_uf4k\",\"subreddit_id\":\"t5_2fwo\",\"body\":\"I for one welcome our new computer based captains of industry.\",\"controversiality\":0,\"created_utc\":1165859969,\"author_flair_css_class\":null,\"score\":2,\"ups\":2,\"subreddit\":\"programming\",\"timestamp_epoch\":1566236766,\"message_id\":\"22735-7bff524e-339c-457b-8f5d-c1c09941d3b4-1566236766\"}"
+    );
+    String partialMessage = "{\"retrieved_on\":1473809083,\"distinguished\":null,\"gilded\":0,\"edited\":false,\"parent_id\":\"t1_cvkrh\",\"id\":\"cvl4k\",\"author\":\"[deleted]\",\"author_flair_text\":null,\"created_utc\":1166676062,\"author_flair_css_class\":null,\"ups\":22,\"score\":22,\"subreddit\":\"reddit.com\",\"stickied\":false,\"link_id\":\"t3_vk0o\",\"subreddit_id\":\"t5_6\",\"controversiality\":0,\"body\":\"i'm still young, but i'm starting to think that putnam-like smarts can never really pay off in a big way if you don't have the other piece. part of me (the one";
+    List<String> actualMessages = messageReader.extractMessage(message);
+
+    Assertions.assertEquals(expectedMessage, actualMessages);
+    Assertions.assertEquals(partialMessage, messageReader.partialMessage());
+  }
+}

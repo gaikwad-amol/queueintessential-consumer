@@ -6,8 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -30,13 +31,16 @@ class FileMessageConsumerTest {
   }
 
   @Test
-  public void shouldCreateFileWithReceivedMessageAsContent() {
+  public void shouldCreateFileWithReceivedMessageAsContent() throws InterruptedException {
     testFolderToWriteFiles = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("TestFolderToWriteFiles")).getFile());
     when(properties.getFileDestinationFolder()).thenReturn(testFolderToWriteFiles);
+    when(properties.getQueueCapacity()).thenReturn(1000);
+    when(properties.threads()).thenReturn(2);
     FileMessageConsumer fileMessageConsumer = new FileMessageConsumer(properties);
-    Path filePath = fileMessageConsumer.receive("{'message_id':'testFile'}");
-    System.out.println(filePath.getFileName());
-    assertEquals("testFile.json", filePath.getFileName().toString());
+    fileMessageConsumer.receive("{'message_id':'testFile'}");
+    Thread.sleep(5000);
+    Optional<File> first = Arrays.stream(testFolderToWriteFiles.listFiles()).filter(s -> s.getName().equals("testFile.json")).findFirst();
+    assertEquals("testFile.json", first.get().getName());
   }
 
   private void cleanTestFolderToWriteFiles() {
