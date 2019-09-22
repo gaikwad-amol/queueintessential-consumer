@@ -16,6 +16,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Component
@@ -24,10 +25,14 @@ public class FileMessageConsumer implements Consumer {
   private ConsumerProperties properties;
   private BlockingQueue<String> queue;
   private File folder;
+  private AtomicInteger numberOfFilesCreated;
+  private AtomicInteger numberOfFilesFailed;
 
   @Autowired
   public FileMessageConsumer(ConsumerProperties properties) {
     this.properties = properties;
+    numberOfFilesCreated = new AtomicInteger(0);
+    numberOfFilesFailed = new AtomicInteger(0);
     folder = properties.getFileDestinationFolder();
     if (!folder.exists()) {
       folder.mkdir();
@@ -55,6 +60,14 @@ public class FileMessageConsumer implements Consumer {
     }
   }
 
+  public int getNumberOfFilesCreated() {
+    return numberOfFilesCreated.get();
+  }
+
+  public int getNumberOfFilesFailed() {
+    return numberOfFilesFailed.get();
+  }
+
   class MessageWriter implements Runnable {
 
     @Override
@@ -69,11 +82,12 @@ public class FileMessageConsumer implements Consumer {
             String uuid = jsonMessage.getString("message_id");
             try {
               Files.write(Paths.get(folder.getAbsolutePath() + "/" + uuid + ".json"), message.getBytes());
+              numberOfFilesCreated.incrementAndGet();
             } catch (IOException e) {
               log.error("Failed to create file for message - " + message, e);
+              numberOfFilesFailed.incrementAndGet();
             }
           }
-
         }
       }
     }

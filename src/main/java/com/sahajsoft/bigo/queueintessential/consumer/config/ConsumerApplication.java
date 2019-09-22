@@ -1,6 +1,7 @@
 package com.sahajsoft.bigo.queueintessential.consumer.config;
 
 import com.sahajsoft.bigo.queueintessential.consumer.ConsumerServer;
+import com.sahajsoft.bigo.queueintessential.consumer.FileMessageConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -17,13 +18,21 @@ import java.io.IOException;
 @Slf4j
 public class ConsumerApplication {
 
+  private static ConfigurableApplicationContext applicationContext;
+
   @RequestMapping("/")
   String home() {
     return "Hello I am consumer!";
   }
 
+  @RequestMapping("/consumer/stats")
+  String consumerStat() {
+    FileMessageConsumer consumer = applicationContext.getBean(FileMessageConsumer.class);
+    return "Consumer stats (success / fail) in number of files is - " + consumer.getNumberOfFilesCreated() + " / " + consumer.getNumberOfFilesFailed();
+  }
+
   public static void main(String[] args) {
-    ConfigurableApplicationContext applicationContext = SpringApplication.run(ConsumerApplication.class, args);
+    applicationContext = SpringApplication.run(ConsumerApplication.class, args);
     ConsumerProperties properties = applicationContext.getBean(ConsumerProperties.class);
     try {
       new Thread(() -> {
